@@ -1,7 +1,10 @@
 body {
-    background-color: #222;
+    background-color: black;
+    color: white;
     text-align: center;
+    font-family: arial;
 }
 
 #hourglass {
+    margin-top: 10px;
 }

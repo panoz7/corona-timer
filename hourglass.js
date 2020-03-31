@@ -5,7 +5,7 @@ export class Hourglass {
         this.ctx = this.canvas.getContext('2d');
         this.width = this.ctx.canvas.width;
         this.height = this.ctx.canvas.height;
-        this.currentTime = 0; 
+        this.startTime; 
         this.resetCanvas();
     }
 
@@ -35,11 +35,25 @@ export class Hourglass {
     }
 
     updateTime(time) {
-        // this.resetCanvas();
+        this.startTime = time;
+        this.resetCanvas();
+        this.drawTime(time);
+    }
+
+    updateStartTime(startDateTime) {
+        this.startTime = startDateTime;
+        this.resetCanvas();
+        this.drawToTime(new Date());
+    }
+
+    drawTime(time) {
+        // Calculate the ellapsed time
+        const elapsedTime = Math.floor((time.getTime() - this.startTime.getTime()) / 1000);
+
 
         // Draw the new pixels
-        const rows = Math.floor(time / this.width);
-        const remainder = time%this.width;
+        const rows = Math.floor(elapsedTime / this.width);
+        const remainder = elapsedTime%this.width;
 
         // Fill in the pixels
         this.ctx.fillStyle = 'white';
@@ -47,13 +61,13 @@ export class Hourglass {
         this.ctx.fillRect(0,rows, remainder, 1)
     }
 
-    startAnimating(startTime) {
-        this.currentTime = startTime;
-        this.updateTime(this.currentTime);
+    startAnimating(startDateTime) {
+        this.startTime = startDateTime;
+        this.drawTime(new Date());
 
         window.setInterval(() => {
             this.currentTime++;
-            this.updateTime(this.currentTime);
+            this.drawTime(new Date());
         }, 1000)
 
     }
